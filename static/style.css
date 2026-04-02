@@ -720,3 +720,11 @@ h1,h2,h3,h4,h5,h6 {
     height: 740px;
   }
 }
+
+.main-logo {
+  max-width: 30%;
+}
+
+.swiper-wrapper img {
+  max-height: 70px;
+}

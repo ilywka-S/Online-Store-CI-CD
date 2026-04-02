@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="section-title mb-4">Всі товари</h2>
+        
+        <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+            
+          {% for product in products %}
+          <div class="col mb-4">
+            <div class="product-item">
+              <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+              <figure>
+                <a href="#" title="{{ product.name }}">
+                  {% if product.image %}
+                      <img src="{{ product.image.url }}" class="tab-image img-fluid">
+                  {% else %}
+                      <img src="{% static 'images/thumb-bananas.png' %}" class="tab-image img-fluid">
+                  {% endif %}
+                </a>
+              </figure>
+              <h3>{{ product.name }}</h3>
+              <span class="price">${{ product.price }}</span>
+              <div class="d-flex align-items-center justify-content-between mt-2">
+                <a href="#" class="btn btn-primary w-100">Add to Cart</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+          
+        </div>
+        </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

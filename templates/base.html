@@ -145,7 +145,7 @@
           
           <div class="col-sm-4 col-lg-3 text-center text-sm-start">
             <div class="main-logo">
-              <a href="index.html">
+              <a href="{% url 'home' %}">
                 <img src="{% static 'images/logo.png' %}" alt="logo" class="img-fluid">
               </a>
             </div>
@@ -238,7 +238,7 @@
               
                   <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
                     <li class="nav-item active">
-                      <a href="#women" class="nav-link">Women</a>
+                      <a href="{% url 'catalog' %}" class="nav-link">Каталог</a>
                     </li>
                     <li class="nav-item dropdown">
                       <a href="#men" class="nav-link">Men</a>
@@ -294,7 +294,6 @@
 
           <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="footer-menu">
-              <img src="{% static 'images/logo.png' %}" alt="logo">
               <div class="social-links mt-5">
                 <ul class="d-flex list-unstyled gap-2">
                   <li>
