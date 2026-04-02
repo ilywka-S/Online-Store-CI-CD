@@ -21,4 +21,5 @@ from store import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_page, name='home'),
+    path('catalog/', views.catalog_page, name='catalog')
 ]
