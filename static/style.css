@@ -728,3 +728,7 @@ h1,h2,h3,h4,h5,h6 {
 .swiper-wrapper img {
   max-height: 70px;
 }
+
+.banner-ad .bg-success-subtle .block-2 {
+  transform: rotate(-45deg);
+}

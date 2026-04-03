@@ -6,3 +6,6 @@ def home_page(request):
 
 def catalog_page(request):
     return render(request, 'catalog.html')
+
+def account_page(request):
+    return render(request, 'account.html')
