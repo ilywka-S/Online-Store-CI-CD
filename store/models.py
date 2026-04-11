@@ -41,3 +41,24 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товари"
+
+class UserProfile(models.Model):
+    ROLE_CHOICES = [
+        ('customer', 'Покупець'),
+        ('admin', 'Адміністратор')
+    ]
+
+    user = models.OneToOneField(User, on_delete = models.CASCADE, verbose_name = "Користувач")
+    role = models.CharField(max_length = 20, choices = ROLE_CHOICES, default = 'customer', verbose_name = "Роль")
+    phone = models.CharField(max_length = 20, blank = True, verbose_name = "Номер телефону")
+    address = models.TextField(blank = True, verbose_name = "Адреса доставки")
+
+    def __str__(self):
+        return f"{self.user.username} ({self.get_role_display()})"
+
+    def is_admin(self):
+        return self.role == 'admin'
+
+    class Meta:
+        verbose_name = "Профіль користувача"
+        verbose_name_plural = "Профілі користувачів"
