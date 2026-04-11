@@ -1,13 +1,28 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class Category(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Назва категорії")
+
+class Universe(models.Model):
+    name = models.CharField(max_length = 100, verbose_name = "Назва всесвіту")
+    description = models.TextField(blank = True, verbose_name = "Опис")
 
     def __str__(self):
         return self.name
-    
+
     class Meta:
+        verbose_name = "Всесвіт"
+        verbose_name_plural = "Всесвіти"
+
+class Category(models.Model):
+    name = models.CharField(max_length = 100, verbose_name = "Назва категорії")
+    description = models.TextField(blank = True, verbose_name = "Опис")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Категорія"
         verbose_name_plural = "Категорії"
 
 class Product(models.Model):
