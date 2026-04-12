@@ -1,0 +1,12 @@
+﻿.env
+.git
+.gitignore
+__pycache__/
+*.pyo
+.pytest_cache
+*.egg-info
+venv/
+.venv/
+env
+media
+db.sqlite3
