@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Category, Product, Universe
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -12,3 +12,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['category']
     search_fields = ['name', 'category']
     list_editable = ['price']
+
+@admin.register(Universe)
+class UniverseAdmin(admin.ModelAdmin):
+    list_display = ['name']
+    search_fields = ['name', 'category']
