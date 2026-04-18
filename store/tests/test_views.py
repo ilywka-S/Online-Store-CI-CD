@@ -1,5 +1,6 @@
 import pytest
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from store.models import Category, Universe, Product
 
 @pytest.mark.django_db
@@ -7,7 +8,8 @@ class TestViews:
     def test_home_page_view(self, client):
         # Додамо тестові дані для перевірки їх наявності в контексті
         category = Category.objects.create(name="Тестова категорія")
-        product = Product.objects.create(name="Тестовий товар", price=100.0, category=category)
+        dummy_image = SimpleUploadedFile(name='test_image.jpg', content=b'', content_type='image/jpeg')
+        product = Product.objects.create(name="Тестовий товар", price=100.0, category=category, image=dummy_image)
         
         url = reverse('home')
         response = client.get(url)
