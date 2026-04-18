@@ -1,0 +1,32 @@
+import pytest
+from django.urls import reverse
+from store.models import Category, Universe, Product
+
+@pytest.mark.django_db
+class TestViews:
+    def test_home_page_view(self, client):
+        # Додамо тестові дані для перевірки їх наявності в контексті
+        category = Category.objects.create(name="Тестова категорія")
+        product = Product.objects.create(name="Тестовий товар", price=100.0, category=category)
+        
+        url = reverse('home')
+        response = client.get(url)
+        
+        assert response.status_code == 200
+        # Перевіряємо що використано правильний шаблон
+        assert 'index.html' in (t.name for t in response.templates)
+        # Перевіряємо що товари передаються до контексту
+        assert 'products' in response.context
+        assert list(response.context['products']) == [product]
+
+    def test_catalog_page_view(self, client):
+        url = reverse('catalog')
+        response = client.get(url)
+        assert response.status_code == 200
+        assert 'catalog.html' in (t.name for t in response.templates)
+
+    def test_account_page_view(self, client):
+        url = reverse('account')
+        response = client.get(url)
+        assert response.status_code == 200
+        assert 'account.html' in (t.name for t in response.templates)
