@@ -11,6 +11,7 @@ urlpatterns = [
     path('account/', views.account_page, name = 'account'),
     path('catalog/category/<int:category_id>', views.catalog_page, name='catalog_by_category'),
     path('catalog/universe/<int:universe_id>', views.catalog_page, name='catalog_by_universe'),
+    path('product/<int:product_id>', views.product_page, name='product')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

@@ -21,7 +21,7 @@
                           <div class="categories my-3">Збудуй свій власний світ!</div>
                           <h3 class="display-4"></h3>
                           <p>Величезний вибір конструкторів для дітей та дорослих. Відкривай нові горизонти фантазії разом з нами.</p>
-                          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Перейти до каталогу</a>
+                          <a href="{% url 'catalog' %}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Перейти до каталогу</a>
                         </div>
                         <div class="img-wrapper col-md-5 align-self-end">
                           <img src="{% static 'images/bundle-icon.png' %}" style="max-height: 400px;" class="img-fluid">
@@ -315,7 +315,7 @@
               <h2 class="section-title">Наші найкращі продажі</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Каталог →</a>
+                <a href="{% url 'catalog' %}" class="btn-link text-decoration-none">Каталог →</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
                   <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
@@ -381,7 +381,7 @@
               <h2 class="section-title">Новинки</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Каталог →</a>
+                <a href="{% url 'catalog' %}" class="btn-link text-decoration-none">Каталог →</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
                   <button class="swiper-next products-carousel-next btn btn-primary">❯</button>

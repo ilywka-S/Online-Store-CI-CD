@@ -39,3 +39,6 @@ def catalog_page(request, category_id=None, universe_id=None):
 
 def account_page(request):
     return render(request, 'account.html')
+
+def product_page(request):
+    return render(request)
