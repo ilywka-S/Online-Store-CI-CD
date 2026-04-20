@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product, Category
+from .models import Product, Category, Universe
 
 # Create your views here.
 def home_page(request):
@@ -14,10 +14,12 @@ def home_page(request):
 def catalog_page(request):
     products = Product.objects.all()
     categories = Category.objects.all()
+    universes = Universe.objects.all()
 
     context = {
         'products': products,
-        'categories': categories
+        'categories': categories,
+        'universes': universes
     }
     return render(request, 'catalog.html', context)
 
