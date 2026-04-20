@@ -138,9 +138,8 @@
                 <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
 
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                  
+                    {% for product in products %}
                     <div class="col">
-                      {% for product in products %}
                       <div class="product-item">
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -169,10 +168,10 @@
                           <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
                         </div>
                       </div>
-                      {% empty %}
-                        <p>Товару немає в наявності.</p>
-                      {% endfor %}
                     </div>
+                    {% empty %}
+                      <p>Товару немає в наявності.</p>
+                    {% endfor %}
                   </div>
                   <!-- / product-grid -->
                   
@@ -181,9 +180,8 @@
                 <div class="tab-pane fade" id="nav-fruits" role="tabpanel" aria-labelledby="nav-fruits-tab">
                   
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
+                    {% for product in products %}
                     <div class="col">
-                      {% for product in products %}
                       <div class="product-item">
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -212,10 +210,10 @@
                           <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
                         </div>
                       </div>
-                      {% empty %}
-                        <p>Товару немає в наявності.</p>
-                      {% endfor %}
                     </div>
+                    {% empty %}
+                      <p>Товару немає в наявності.</p>
+                    {% endfor %}
                  </div>
                   <!-- / product-grid -->
 
@@ -223,9 +221,8 @@
                 <div class="tab-pane fade" id="nav-juices" role="tabpanel" aria-labelledby="nav-juices-tab">
 
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
+                    {% for product in products %}
                     <div class="col">
-                      {% for product in products %}
                       <div class="product-item">
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -254,10 +251,10 @@
                           <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
                         </div>
                       </div>
-                      {% empty %}
-                        <p>Товару немає в наявності.</p>
-                      {% endfor %}
                     </div>
+                    {% empty %}
+                      <p>Товару немає в наявності.</p>
+                    {% endfor %}
                   </div>
                   <!-- / product-grid -->
                   
