@@ -13,7 +13,7 @@
               <div class="d-flex gap-2 flex-wrap">
                 <a href="#" class="btn btn-dark">Всі</a>
                 {% for category in categories %}
-                  <a href="#" class="btn btn-outline-dark">{{ category.name }}</a>
+                  <a href="{% url 'catalog_by_category' category.id %}" class="btn btn-outline-dark">{{ category.name }}</a>
                 {% empty %}
                 <p>Категорій поки немає</p>
               {% endfor %}
@@ -22,7 +22,7 @@
               <div class="d-flex gap-2 flex-wrap">
                 <a href="#" class="btn btn-dark">Всі</a>
                 {% for universe in universes %}
-                  <a href="#" class="btn btn-outline-dark">{{ universe.name }}</a>
+                  <a href="{% url 'catalog_by_universe' universe.id %}" class="btn btn-outline-dark">{{ universe.name }}</a>
                 {% empty %}
                 <p>Всесвітів поки немає</p>
               {% endfor %}
