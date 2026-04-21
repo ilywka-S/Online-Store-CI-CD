@@ -8,23 +8,38 @@
       <div class="col-md-12">
         <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
             
-          <div class="categories-filter mb-5">
+          <div class="categories-filter mb-3">
             <h4 class="mb-3">Категорії:</h4>
-              <div class="d-flex gap-2 flex-wrap">
-                <a href="#" class="btn btn-dark">Всі</a>
-                {% for category in categories %}
-                  <a href="{% url 'catalog_by_category' category.id %}" class="btn btn-outline-dark">{{ category.name }}</a>
-                {% empty %}
-                <p>Категорій поки немає</p>
+            <div class="d-flex gap-2 flex-wrap">
+              
+              <a href="?{% if active_universe %}universe={{ active_universe }}&{% endif %}{% if current_sort != 'default' %}sort={{ current_sort }}{% endif %}" 
+                class="btn {% if not active_category %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Всі
+              </a>
+
+              {% for category in categories %}
+                <a href="?category={{ category.id }}{% if active_universe %}&universe={{ active_universe }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}" 
+                  class="btn {% if active_category == category.id %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                  {{ category.name }}
+                </a>
               {% endfor %}
             </div>
+          </div>
+
+          <div class="universes-filter mb-5">
             <h4 class="mb-3">Всесвіти:</h4>
-              <div class="d-flex gap-2 flex-wrap">
-                <a href="#" class="btn btn-dark">Всі</a>
-                {% for universe in universes %}
-                  <a href="{% url 'catalog_by_universe' universe.id %}" class="btn btn-outline-dark">{{ universe.name }}</a>
-                {% empty %}
-                <p>Всесвітів поки немає</p>
+            <div class="d-flex gap-2 flex-wrap">
+              
+              <a href="?{% if active_category %}category={{ active_category }}&{% endif %}{% if current_sort != 'default' %}sort={{ current_sort }}{% endif %}" 
+                class="btn {% if not active_universe %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                Всі
+              </a>
+
+              {% for universe in universes %}
+                <a href="?universe={{ universe.id }}{% if active_category %}&category={{ active_category }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}" 
+                  class="btn {% if active_universe == universe.id %}btn-dark{% else %}btn-outline-dark{% endif %}">
+                  {{ universe.name }}
+                </a>
               {% endfor %}
             </div>
           </div>
@@ -36,6 +51,8 @@
 
           <div class="sort-filter">
               <form method="get" class="d-flex align-items-center gap-2">
+                {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+                {% if active_universe %}<input type="hidden" name="universe" value="{{ active_universe }}">{% endif %}
                   <label for="sort" class="form-label mb-0 text-nowrap fw-bold">Сортувати:</label>
                   <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
                       <option value="default" {% if current_sort == 'default' %}selected{% endif %}>

@@ -11,26 +11,23 @@ def home_page(request):
 
     return render(request, 'index.html', context)
 
-def catalog_page(request, category_id=None, universe_id=None):
+def catalog_page(request):
     products = Product.objects.all()
     categories = Category.objects.all()
     universes = Universe.objects.all()
 
-    active_category = None
-    active_universe = None
-
-    if category_id:
-        active_category = get_object_or_404(Category, id=category_id)
-        products = Product.objects.filter(category=active_category)
-
-    elif universe_id:
-        active_universe = get_object_or_404(Universe, id=universe_id)
-        products = Product.objects.filter(universe=active_universe)
-    
-    else:
-        products = Product.objects.all()
-
+    cat_id = request.GET.get('category')
+    uni_id = request.GET.get('universe')
     sort_by = request.GET.get('sort', 'default')
+
+    active_category = int(cat_id) if cat_id and cat_id.isdigit() else None
+    active_universe = int(uni_id) if uni_id and uni_id.isdigit() else None
+
+    if active_category:
+        products = products.filter(category_id=active_category)
+
+    if active_universe:
+        products = products.filter(universe_id=active_universe)
 
     if sort_by == 'price_asc':
         products = products.order_by('price')
@@ -44,7 +41,7 @@ def catalog_page(request, category_id=None, universe_id=None):
         'active_category': active_category,
         'active_universe': active_universe,
         'current_sort': sort_by
-    }
+    }   
     return render(request, 'catalog.html', context)
 
 def account_page(request):
