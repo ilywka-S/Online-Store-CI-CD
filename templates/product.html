@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="product-image-wrapper p-4 bg-light rounded shadow-sm text-center">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}" style="max-height: 500px;">
+          {% else %}
+            <img src="{% static 'images/thumb-bananas.png' %}" class="img-fluid rounded" alt="No image">
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Головна</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'catalog' %}">Каталог</a></li>
+            <li class="breadcrumb-item active">{{ product.category.name }}</li>
+          </ol>
+        </nav>
+
+        <h1 class="display-4 fw-bold mb-3">{{ product.name }}</h1>
+        
+        <div class="d-flex align-items-center mb-4">
+          <span class="fs-2 fw-bold text-primary me-3">{{ product.price }} грн.</span>
+          <span class="badge bg-success">-30% Тільки сьогодні!</span>
+        </div>
+
+        <p class="lead mb-5 text-muted">
+          {{ product.description|default:"Ця модель чекає на свого власника. Якісний продукт, яскраві кольори та години радощів!" }}
+        </p>
+
+        <div class="d-flex gap-3">
+          <div class="input-group" style="width: 140px;">
+            <button class="btn btn-outline-dark">-</button>
+            <input type="text" class="form-control text-center" value="1">
+            <button class="btn btn-outline-dark">+</button>
+          </div>
+          <button class="btn btn-dark btn-lg px-5">Додати в кошик</button>
+        </div>
+
+        <hr class="my-5">
+        
+        <div class="additional-info">
+          <p><strong>Категорія:</strong> {{ product.category.name }}</p>
+          {% if product.universe %}
+            <p><strong>Всесвіт:</strong> {{ product.universe.name }}</p>
+          {% endif %}
+          <p><strong>Наявність:</strong> <span class="text-success">На складі</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

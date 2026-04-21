@@ -47,5 +47,7 @@ def catalog_page(request):
 def account_page(request):
     return render(request, 'account.html')
 
-def product_page(request):
-    return render(request)
+def product_page(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+
+    return render(request, 'product.html', {'product': product})
