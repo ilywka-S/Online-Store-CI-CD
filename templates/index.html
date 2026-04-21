@@ -21,7 +21,7 @@
                           <div class="categories my-3">Збудуй свій власний світ!</div>
                           <h3 class="display-4"></h3>
                           <p>Величезний вибір конструкторів для дітей та дорослих. Відкривай нові горизонти фантазії разом з нами.</p>
-                          <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Перейти до каталогу</a>
+                          <a href="{% url 'catalog' %}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-3 mt-3">Перейти до каталогу</a>
                         </div>
                         <div class="img-wrapper col-md-5 align-self-end">
                           <img src="{% static 'images/bundle-icon.png' %}" style="max-height: 400px;" class="img-fluid">
@@ -138,7 +138,6 @@
                 <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
 
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-                    
                     {% for product in products %}
                     <div class="col">
                       <div class="product-item">
@@ -181,9 +180,8 @@
                 <div class="tab-pane fade" id="nav-fruits" role="tabpanel" aria-labelledby="nav-fruits-tab">
                   
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
+                    {% for product in products %}
                     <div class="col">
-                      {% for product in products %}
                       <div class="product-item">
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -212,10 +210,10 @@
                           <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
                         </div>
                       </div>
-                      {% empty %}
-                        <p>Товару немає в наявності.</p>
-                      {% endfor %}
                     </div>
+                    {% empty %}
+                      <p>Товару немає в наявності.</p>
+                    {% endfor %}
                  </div>
                   <!-- / product-grid -->
 
@@ -223,9 +221,8 @@
                 <div class="tab-pane fade" id="nav-juices" role="tabpanel" aria-labelledby="nav-juices-tab">
 
                   <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
-
+                    {% for product in products %}
                     <div class="col">
-                      {% for product in products %}
                       <div class="product-item">
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -254,10 +251,10 @@
                           <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
                         </div>
                       </div>
-                      {% empty %}
-                        <p>Товару немає в наявності.</p>
-                      {% endfor %}
                     </div>
+                    {% empty %}
+                      <p>Товару немає в наявності.</p>
+                    {% endfor %}
                   </div>
                   <!-- / product-grid -->
                   
@@ -318,7 +315,7 @@
               <h2 class="section-title">Наші найкращі продажі</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Каталог →</a>
+                <a href="{% url 'catalog' %}" class="btn-link text-decoration-none">Каталог →</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
                   <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
@@ -384,7 +381,7 @@
               <h2 class="section-title">Новинки</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Каталог →</a>
+                <a href="{% url 'catalog' %}" class="btn-link text-decoration-none">Каталог →</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
                   <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
