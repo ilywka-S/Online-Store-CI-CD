@@ -30,10 +30,20 @@ def catalog_page(request, category_id=None, universe_id=None):
     else:
         products = Product.objects.all()
 
+    sort_by = request.GET.get('sort', 'default')
+
+    if sort_by == 'price_asc':
+        products = products.order_by('price')
+    if sort_by == 'price_desc':
+        products = products.order_by('-price')
+
     context = {
         'products': products,
         'categories': categories,
-        'universes': universes
+        'universes': universes,
+        'active_category': active_category,
+        'active_universe': active_universe,
+        'current_sort': sort_by
     }
     return render(request, 'catalog.html', context)
 

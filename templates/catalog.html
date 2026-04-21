@@ -30,7 +30,27 @@
           </div>
           
         </div>
-        <h2 class="section-title mb-4">Всі товари</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="categories-filter">
+              </div>
+
+          <div class="sort-filter">
+              <form method="get" class="d-flex align-items-center gap-2">
+                  <label for="sort" class="form-label mb-0 text-nowrap fw-bold">Сортувати:</label>
+                  <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
+                      <option value="default" {% if current_sort == 'default' %}selected{% endif %}>
+                          За замовчуванням
+                      </option>
+                      <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>
+                          Від дешевих до дорогих
+                      </option>
+                      <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>
+                          Від дорогих до дешевих
+                      </option>
+                  </select>
+              </form>
+          </div>
+      </div>
         <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
           {% for product in products %}
             <div class="col">
