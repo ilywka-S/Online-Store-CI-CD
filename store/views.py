@@ -4,9 +4,11 @@ from .models import Product, Category, Universe
 # Create your views here.
 def home_page(request):
     all_products = Product.objects.all()
+    categories = Category.objects.all()
 
     context = {
-        'products': all_products
+        'products': all_products,
+        'categories': categories
     }
 
     return render(request, 'index.html', context)
@@ -15,6 +17,11 @@ def catalog_page(request):
     products = Product.objects.all()
     categories = Category.objects.all()
     universes = Universe.objects.all()
+
+    search_query = request.GET.get('q')
+
+    if search_query:
+        products = products.filter(name__icontains=search_query)
 
     cat_id = request.GET.get('category')
     uni_id = request.GET.get('universe')
@@ -40,7 +47,8 @@ def catalog_page(request):
         'universes': universes,
         'active_category': active_category,
         'active_universe': active_universe,
-        'current_sort': sort_by
+        'current_sort': sort_by,
+        'search_query': search_query,
     }   
     return render(request, 'catalog.html', context)
 
