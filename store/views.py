@@ -4,9 +4,11 @@ from .models import Product, Category, Universe
 # Create your views here.
 def home_page(request):
     all_products = Product.objects.all()
+    categories = Category.objects.all()
 
     context = {
-        'products': all_products
+        'products': all_products,
+        'categories': categories
     }
 
     return render(request, 'index.html', context)

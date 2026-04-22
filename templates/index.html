@@ -44,7 +44,7 @@
                   <div class="content-wrapper col-md-7">
                     <div class="categories sale mb-3 pb-3">20% знижки</div>
                     <h3 class="banner-title">Marvel Universe</h3>
-                    <a href="#" class="d-flex align-items-center nav-link">Переглянути колекцію <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
+                    <a href="{% url 'catalog' %}?universe=1" class="d-flex align-items-center nav-link">Переглянути колекцію <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
                   </div>
 
                 </div>
@@ -59,7 +59,7 @@
                   <div class="content-wrapper col-md-7">
                     <div class="categories sale mb-3 pb-3">15% знижки</div>
                     <h3 class="item-title">Натхненно тваринами</h3>
-                    <a href="#" class="d-flex align-items-center nav-link">Переглянути колекцію <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
+                    <a href="{% url 'catalog' %}?universe=2" class="d-flex align-items-center nav-link">Переглянути колекцію <svg width="24" height="24"><use xlink:href="#arrow-right"></use></svg></a>
                   </div>
 
                 </div>
@@ -82,7 +82,7 @@
               <h2 class="section-title">Категорії</h2>
 
               <div class="d-flex align-items-center">
-                <a href="#" class="btn-link text-decoration-none">Переглянути всі категорії→</a>
+                <a href="{% url 'catalog' %}" class="btn-link text-decoration-none">Переглянути всі категорії→</a>
                 <div class="swiper-buttons">
                   <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
                   <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
@@ -97,19 +97,20 @@
 
             <div class="category-carousel swiper">
               <div class="swiper-wrapper">
-                <a href="index.html" class="nav-link category-item swiper-slide">
-                  <img src="{% static 'images/kinder-icon.png' %}" alt="Category Thumbnail">
-                  <h3 class="category-title">Kinder</h3>
-                </a>
-                <a href="index.html" class="nav-link category-item swiper-slide">
-                  <img src="{% static 'images/lego-icon.png' %}" alt="Category Thumbnail">
-                  <h3 class="category-title">LEGO</h3>
-                </a>
-                <a href="index.html" class="nav-link category-item swiper-slide">
-                  <img src="{% static 'images/funko_pop-icon.png' %}" alt="Category Thumbnail">
-                  <h3 class="category-title">Funko pop</h3>
-                </a>             
-              </div>
+                
+                {% for category in categories %}
+                  <a href="{% url 'catalog' %}?category={{ category.id }}" class="nav-link category-item swiper-slide">
+                    
+                    {% if category.image %}
+                        <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                    {% else %}
+                        <img src="{% static '' %}" alt="{{ category.name }}">
+                    {% endif %}
+                    
+                    <h3 class="category-title">{{ category.name }}</h3>
+                  </a>
+                {% endfor %}
+                </div>
             </div>
 
           </div>
@@ -144,7 +145,7 @@
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                          <a href="index.html" title="Product Title">
+                          <a href="{% url 'product' product.id %}" title="Product Title">
                             <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
                           </a>
                         </figure>
@@ -186,7 +187,7 @@
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                          <a href="index.html" title="Product Title">
+                          <a href="{% url 'product' product.id %}" title="Product Title">
                             <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
                           </a>
                         </figure>
@@ -227,7 +228,7 @@
                         <span class="badge bg-success position-absolute m-3">-30%</span>
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                          <a href="index.html" title="Product Title">
+                          <a href="{% url 'product' product.id %}" title="Product Title">
                             <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
                           </a>
                         </figure>
@@ -280,7 +281,7 @@
                   <div class="categories text-primary fs-3 fw-bold">Знижки до 15%</div>
                   <h3 class="banner-title">Нова колекція Funko Pop</h3>
                   <p>Щойно з заводу.</p>
-                  <a href="#" class="btn btn-dark text-uppercase">Купити зараз</a>
+                  <a href="{% url 'catalog' %}?category=2" class="btn btn-dark text-uppercase">Купити зараз</a>
 
                 </div>
               </div>  
@@ -335,7 +336,7 @@
                   <span class="badge bg-success position-absolute m-3">-15%</span>
                   <a href="#" class="btn-wishlist"><svg width="24"а height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="{% url 'product' product.id %}" title="Product Title">
                       <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
                     </a>
                   </figure>
@@ -400,7 +401,7 @@
                 <div class="product-item swiper-slide">
                   <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                   <figure>
-                    <a href="index.html" title="Product Title">
+                    <a href="{% url 'product' product.id %}" title="Product Title">
                       <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
                     </a>
                   </figure>
