@@ -69,6 +69,13 @@
           </div>
       </div>
         <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+          {% if search_query %}
+            <div class="alert alert-info mb-4">
+                Ви шукали: <strong>"{{ search_query }}"</strong>. 
+                Знайдено товарів: {{ products|length }}
+                <a href="{% url 'catalog' %}" class="alert-link ms-3">Скинути пошук</a>
+            </div>
+          {% endif %}
           {% for product in products %}
             <div class="col">
               <div class="product-item">
