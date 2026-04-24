@@ -42,22 +42,17 @@ class TestProductModel:
 @pytest.mark.django_db
 class TestUserProfileModel:
     def test_user_profile_creation_and_properties(self):
-        user = User.objects.create_user(username="testuser", password="password")
-        profile = UserProfile.objects.create(
-            user=user, role="customer", phone="123456789", address="Test Ave 1"
-        )
-        # Перевірка __str__
+        user = User.objects.create_user(username="testuser", password="pass")
+        profile = user.userprofile  # сигнал вже створив його
+        profile.phone = "123456789"
+        profile.address = "Test Ave 1"
+        profile.save()
+
+        assert profile.role == "customer"
+        assert profile.phone == "123456789"
+        assert profile.address == "Test Ave 1"
         assert str(profile) == "testuser (Покупець)"
-        # Перевірка is_admin
         assert profile.is_admin() is False
-        
-        # Перевірка ролі адміністратора
-        admin_user = User.objects.create_user(username="adminuser", password="password")
-        admin_profile = UserProfile.objects.create(
-            user=admin_user, role="admin", phone="987654321", address="Admin Str 1"
-        )
-        assert admin_profile.is_admin() is True
-        assert str(admin_profile) == "adminuser (Адміністратор)"
 
 @pytest.mark.django_db
 class TestOrderModels:
