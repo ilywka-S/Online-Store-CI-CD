@@ -1,5 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Product, Category, Universe
+from django.contrib.auth import login
+from django.contrib import messages
+from .forms import RegisterForm
+from django.shortcuts import redirect
 
 # Create your views here.
 def home_page(request):
@@ -59,3 +63,14 @@ def product_page(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     return render(request, 'product.html', {'product': product})
+
+def register_page(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Реєстрацію успішно завершено!')
+            return redirect('home')
+        else:
+            form = RegisterForm()
+        return render(request, 'register.html', {'form': form})
