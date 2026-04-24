@@ -4,10 +4,9 @@
     restart: always
     volumes:
       - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - /var/www/Online-Store-CI-CD/media:/app/media
     env_file:
       - .env
-    depends_on: []
 
   nginx:
     image: nginx:alpine
@@ -17,10 +16,9 @@
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/staticfiles
-      - media_volume:/app/media
+      - /var/www/Online-Store-CI-CD/media:/app/media
     depends_on:
       - web
 
 volumes:
   static_volume:
-  media_volume:
