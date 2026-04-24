@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Product, Category, Universe
 from .forms import RegisterForm
@@ -48,6 +49,7 @@ def catalog_page(request):
     return render(request, 'catalog.html', context)
 
 
+@login_required(login_url='login')
 def account_page(request):
     return render(request, 'account.html')
 
