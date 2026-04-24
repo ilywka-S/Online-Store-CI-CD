@@ -1,21 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Product, Category, Universe
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib import messages
+from .models import Product, Category, Universe
 from .forms import RegisterForm
-from django.shortcuts import redirect
 
-# Create your views here.
+
 def home_page(request):
     all_products = Product.objects.all()
     categories = Category.objects.all()
+    return render(request, 'index.html', {'products': all_products, 'categories': categories})
 
-    context = {
-        'products': all_products,
-        'categories': categories
-    }
-
-    return render(request, 'index.html', context)
 
 def catalog_page(request):
     products = Product.objects.all()
@@ -23,7 +17,6 @@ def catalog_page(request):
     universes = Universe.objects.all()
 
     search_query = request.GET.get('q')
-
     if search_query:
         products = products.filter(name__icontains=search_query)
 
@@ -36,10 +29,8 @@ def catalog_page(request):
 
     if active_category:
         products = products.filter(category_id=active_category)
-
     if active_universe:
         products = products.filter(universe_id=active_universe)
-
     if sort_by == 'price_asc':
         products = products.order_by('price')
     if sort_by == 'price_desc':
@@ -53,16 +44,18 @@ def catalog_page(request):
         'active_universe': active_universe,
         'current_sort': sort_by,
         'search_query': search_query,
-    }   
+    }
     return render(request, 'catalog.html', context)
+
 
 def account_page(request):
     return render(request, 'account.html')
 
+
 def product_page(request, product_id):
     product = get_object_or_404(Product, id=product_id)
-
     return render(request, 'product.html', {'product': product})
+
 
 def register_page(request):
     if request.method == 'POST':
@@ -71,6 +64,6 @@ def register_page(request):
             form.save()
             messages.success(request, 'Реєстрацію успішно завершено!')
             return redirect('home')
-        else:
-            form = RegisterForm()
-        return render(request, 'register.html', {'form': form})
+    else:
+        form = RegisterForm()
+    return render(request, 'register.html', {'form': form})
