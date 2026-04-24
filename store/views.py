@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .models import Product, Category, Universe
 from .forms import RegisterForm
@@ -67,3 +67,20 @@ def register_page(request):
     else:
         form = RegisterForm()
     return render(request, 'register.html', {'form': form})
+
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('account')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('account')
+        messages.error(request, "Невірний логін або пароль!")
+    return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('home')
