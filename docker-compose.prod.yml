@@ -1,12 +1,4 @@
 ﻿services:
-  db:
-    image: postgres:16-alpine
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    env_file:
-      - .env
-
   web:
     build: .
     restart: always
@@ -15,8 +7,7 @@
       - media_volume:/app/media
     env_file:
       - .env
-    depends_on:
-      - db
+    depends_on: []
 
   nginx:
     image: nginx:alpine
@@ -31,6 +22,5 @@
       - web
 
 volumes:
-  postgres_data:
   static_volume:
   media_volume:
