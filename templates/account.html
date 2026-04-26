@@ -1,8 +1,89 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container py-5">
-    <h2>Особистий кабінет</h2>
-    <p>Ласкаво просимо!</p>
-</div>
+<section class="py-5">
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      
+      <div class="col-md-10">
+        <h2 class="mb-4">Особистий кабінет</h2>
+        <p class="text-muted mb-4">Ласкаво просимо, <strong>{{ user.username }}</strong>!</p>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'success' }} alert-dismissible fade show rounded-3" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body p-4">
+                <h4 class="card-title mb-4">Ваші дані</h4>
+                
+                <ul class="list-group list-group-flush mb-4">
+                  <li class="list-group-item bg-transparent px-0">
+                    <span class="text-muted d-block">Ім'я:</span>
+                    <span class="fw-semibold">{{ user.first_name|default:"Не вказано" }}</span>
+                  </li>
+                  <li class="list-group-item bg-transparent px-0">
+                    <span class="text-muted d-block">Прізвище:</span>
+                    <span class="fw-semibold">{{ user.last_name|default:"Не вказано" }}</span>
+                  </li>
+                  <li class="list-group-item bg-transparent px-0 border-bottom-0">
+                    <span class="text-muted d-block">Пошта:</span>
+                    <span class="fw-semibold">{{ user.email|default:"Не вказано" }}</span>
+                  </li>
+                </ul>
+                
+                <div class="mt-auto">
+                  <a href="/logout" class="btn btn-outline-danger w-100 rounded-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="me-2"><path fill="currentColor" d="M16 17v-3H9v-4h7V7l5 5l-5 5M14 2a2 2 0 0 1 2 2v2h-2V4H5v16h9v-2h2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9Z"/></svg>
+                    Вийти з акаунту
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+              <div class="card-body p-4">
+                <h4 class="card-title mb-4">Зміна пароля</h4>
+                
+                <form method="post" action="">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="old_password" class="form-label fw-semibold">Старий пароль</label>
+                    <input type="password" name="old_password" id="old_password" class="form-control bg-light border-0 rounded-3" required>
+                  </
+                  
+                  <div class="mb-3">
+                    <label for="new_password" class="form-label fw-semibold">Новий пароль</label>
+                    <input type="password" name="new_password" id="new_password" class="form-control bg-light border-0 rounded-3" required>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <label for="confirm_password" class="form-label fw-semibold">Підтвердження пароля</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-control bg-light border-0 rounded-3" required>
+                  </div>
+                  
+                  <button type="submit" name="change_password" class="btn btn-dark w-100 rounded-3">
+                    Зберегти новий пароль
+                  </button>
+                </form>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 {% endblock %}

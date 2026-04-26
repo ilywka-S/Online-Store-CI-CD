@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Product, Category, Universe
 from .forms import RegisterForm
-
 
 def home_page(request):
     all_products = Product.objects.all()
@@ -48,16 +47,34 @@ def catalog_page(request):
     }
     return render(request, 'catalog.html', context)
 
-
-@login_required(login_url='login')
-def account_page(request):
-    return render(request, 'account.html')
-
-
 def product_page(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'product.html', {'product': product})
 
+
+@login_required(login_url='login')
+def account_page(request):
+    if request.method == 'POST' and 'change_password' in request.POST:
+        old_pass = request.POST.get('old_password')
+        new_pass = request.POST.get('new_password')
+        confirm_pass = request.POST.get('confirm_password')
+
+        user = request.user
+
+        if not user.check_password(old_pass):
+            messages.error(request, "Старий пароль введено неправильно!")
+        elif new_pass != confirm_pass:
+            messages.error(request, "Нові паролі не збігаються!")
+        elif len(new_pass) < 8:
+            messages.error(request, "Новий пароль занадто короткий (мінімум 8 символів)!")
+        else:
+            user.set_password(new_pass)
+            user.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Пароль успішно змінено!")
+            return redirect('account')
+
+    return render(request, 'account.html')
 
 def register_page(request):
     if request.method == 'POST':
