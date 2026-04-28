@@ -35,14 +35,17 @@
           {{ product.description|default:"Ця модель чекає на свого власника. Якісний продукт, яскраві кольори та години радощів!" }}
         </p>
 
-        <div class="d-flex gap-3">
-          <div class="input-group" style="width: 140px;">
-            <button class="btn btn-outline-dark">-</button>
-            <input type="text" class="form-control text-center" value="1">
-            <button class="btn btn-outline-dark">+</button>
+        <form action="{% url 'add_to_cart' product.id %}" method="post">
+          {% csrf_token %}
+          <div class="d-flex gap-3">
+            <div class="input-group" style="width: 140px;">
+              <button type="button" class="btn btn-outline-dark" onclick="var el=document.getElementById('quantity'); if(el.value>1) el.value--;">-</button>
+              <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1">
+              <button type="button" class="btn btn-outline-dark" onclick="var el=document.getElementById('quantity'); el.value++;">+</button>
+            </div>
+            <button type="submit" class="btn btn-dark btn-lg px-5">Додати в кошик</button>
           </div>
-          <button class="btn btn-dark btn-lg px-5">Додати в кошик</button>
-        </div>
+        </form>
 
         <hr class="my-5">
         
