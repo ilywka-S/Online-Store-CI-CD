@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="py-5">
+  <div class="container my-5">
+    <h2 class="mb-4">Підтвердження замовлення</h2>
+    <div class="row">
+      <div class="col-md-8">
+        <ul class="list-group mb-3 shadow-sm">
+          {% for item in cart.items.all %}
+          <li class="list-group-item d-flex justify-content-between lh-sm align-items-center py-3">
+            <div>
+              <h5 class="my-0">{{ item.product.name }}</h5>
+              <small class="text-body-secondary">{{ item.quantity }} шт. х {{ item.product.price }} грн.</small>
+            </div>
+            <div class="d-flex align-items-center gap-4">
+              <span class="fs-5 fw-bold">{{ item.get_total }} грн.</span>
+              <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-outline-danger">Видалити</a>
+            </div>
+          </li>
+          {% empty %}
+          <li class="list-group-item py-4 text-center text-muted">Ваш кошик порожній.</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 shadow-sm bg-light">
+          <h4 class="mb-3">Всього до сплати:</h4>
+          <h1 class="text-primary mb-4">{{ cart.get_total_price }} грн.</h1>
+          {% if cart.items.all %}
+          <form action="{% url 'confirm_payment' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-success w-100 btn-lg">Підтвердити оплату</button>
+          </form>
+          {% else %}
+          <a href="{% url 'catalog' %}" class="btn btn-dark w-100 btn-lg">Повернутись до каталогу</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
