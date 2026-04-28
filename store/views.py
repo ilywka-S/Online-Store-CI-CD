@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Product, Category, Universe
+from .models import Product, Category, Universe, Cart, CartItem
 from .forms import RegisterForm
 
 def home_page(request):
@@ -102,4 +102,40 @@ def login_page(request):
 
 def logout_view(request):
     logout(request)
+    return redirect('home')
+
+@login_required(login_url='login')
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    
+    quantity = int(request.POST.get('quantity', 1))
+    
+    cart_item, item_created = CartItem.objects.get_or_create(cart=cart, product=product)
+    if not item_created:
+        cart_item.quantity += quantity
+    else:
+        cart_item.quantity = quantity
+    cart_item.save()
+    
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+@login_required(login_url='login')
+def remove_from_cart(request, item_id):
+    cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
+    cart_item.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+@login_required(login_url='login')
+def checkout_page(request):
+    cart, created = Cart.objects.get_or_create(user=request.user)
+    return render(request, 'checkout.html', {'cart': cart})
+
+@login_required(login_url='login')
+def confirm_payment(request):
+    if request.method == 'POST':
+        cart = get_object_or_404(Cart, user=request.user)
+        cart.items.all().delete()
+        messages.success(request, "Оплата пройшла успішно!")
+        return render(request, 'payment_success.html')
     return redirect('home')
