@@ -96,3 +96,22 @@ class OrderItem(models.Model):
     class Meta:
         verbose_name = "Позиція замовлення"
         verbose_name_plural = "Позиції замовлення"
+        
+class Cart(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart', verbose_name="Користувач")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення")
+    def __str__(self):
+        return f"Кошик користувача {self.user.username}"
+    def get_total_price(self):
+        return sum(item.get_total() for item in self.items.all())
+    def get_total_quantity(self):
+        return sum(item.quantity for item in self.items.all())
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE, verbose_name="Кошик")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
+    quantity = models.PositiveIntegerField(default=1, verbose_name="Кількість")
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
+    def get_total(self):
+        return self.product.price * self.quantity
