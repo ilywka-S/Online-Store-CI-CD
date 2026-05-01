@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Product, Category, Universe, Cart, CartItem
+from .models import Product, Category, Universe, Cart, CartItem, Order, OrderItem
 from .forms import RegisterForm
 
 def home_page(request):
@@ -135,7 +135,26 @@ def checkout_page(request):
 def confirm_payment(request):
     if request.method == 'POST':
         cart = get_object_or_404(Cart, user=request.user)
-        cart.items.all().delete()
-        messages.success(request, "Оплата пройшла успішно!")
-        return render(request, 'payment_success.html')
+        
+        if cart.items.exists():
+            order = Order.objects.create(
+                user=request.user,
+                total_price=cart.get_total_price()
+            )
+            
+            for item in cart.items.all():
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    price=item.product.price
+                )
+            
+            cart.items.all().delete()
+            messages.success(request, "Оплата пройшла успішно! Ваше замовлення збережено в історію.")
+            return render(request, 'payment_success.html')
+        else:
+            messages.error(request, "Ваш кошик порожній.")
+            return redirect('home')
+            
     return redirect('home')
