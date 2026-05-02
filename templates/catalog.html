@@ -18,7 +18,7 @@
               </a>
 
               {% for category in categories %}
-                <a href="?category={{ category.id }}{% if active_universe %}&universe={{ active_universe }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}" 
+                <a href="?category={{ category.id }}{% if active_universe %}&universe={{ active_universe }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}{% if current_manufacturer %}&manufacturer={{ current_manufacturer }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}" 
                   class="btn {% if active_category == category.id %}btn-dark{% else %}btn-outline-dark{% endif %}">
                   {{ category.name }}
                 </a>
@@ -36,7 +36,7 @@
               </a>
 
               {% for universe in universes %}
-                <a href="?universe={{ universe.id }}{% if active_category %}&category={{ active_category }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}" 
+                <a href="?universe={{ universe.id }}{% if active_category %}&category={{ active_category }}{% endif %}{% if current_sort != 'default' %}&sort={{ current_sort }}{% endif %}{% if current_manufacturer %}&manufacturer={{ current_manufacturer }}{% endif %}{% if min_price %}&min_price={{ min_price }}{% endif %}{% if max_price %}&max_price={{ max_price }}{% endif %}" 
                   class="btn {% if active_universe == universe.id %}btn-dark{% else %}btn-outline-dark{% endif %}">
                   {{ universe.name }}
                 </a>
@@ -45,29 +45,59 @@
           </div>
           
         </div>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="categories-filter">
-              </div>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
 
-          <div class="sort-filter">
-              <form method="get" class="d-flex align-items-center gap-2">
-                {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
-                {% if active_universe %}<input type="hidden" name="universe" value="{{ active_universe }}">{% endif %}
-                  <label for="sort" class="form-label mb-0 text-nowrap fw-bold">Сортувати:</label>
-                  <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
-                      <option value="default" {% if current_sort == 'default' %}selected{% endif %}>
-                          За замовчуванням
-                      </option>
-                      <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>
-                          Від дешевих до дорогих
-                      </option>
-                      <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>
-                          Від дорогих до дешевих
-                      </option>
-                  </select>
-              </form>
-          </div>
-      </div>
+    <div class="advanced-filters">
+        <form method="get" class="d-flex align-items-center gap-2 flex-wrap">
+            {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+            {% if active_universe %}<input type="hidden" name="universe" value="{{ active_universe }}">{% endif %}
+            {% if current_sort != 'default' %}<input type="hidden" name="sort" value="{{ current_sort }}">{% endif %}
+
+            <div class="input-group" style="max-width: 250px;">
+                <span class="input-group-text">Ціна від</span>
+                <input type="number" name="min_price" class="form-control" placeholder="0" value="{{ min_price|default_if_none:'' }}">
+                <span class="input-group-text">до</span>
+                <input type="number" name="max_price" class="form-control" placeholder="1000" value="{{ max_price|default_if_none:'' }}">
+            </div>
+
+            <select name="manufacturer" class="form-select w-auto">
+                <option value="">Всі виробники</option>
+                {% for manufacturer in manufacturers %}
+                    <option value="{{ manufacturer }}" {% if current_manufacturer == manufacturer %}selected{% endif %}>
+                        {{ manufacturer }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Застосувати</button>
+                
+                <a href="{% url 'catalog' %}" class="btn btn-outline-danger" title="Скинути всі фільтри">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="sort-filter">
+        <form method="get" class="d-flex align-items-center gap-2">
+            {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+            {% if active_universe %}<input type="hidden" name="universe" value="{{ active_universe }}">{% endif %}
+            {% if current_manufacturer %}<input type="hidden" name="manufacturer" value="{{ current_manufacturer }}">{% endif %}
+            {% if min_price %}<input type="hidden" name="min_price" value="{{ min_price }}">{% endif %}
+            {% if max_price %}<input type="hidden" name="max_price" value="{{ max_price }}">{% endif %}
+            
+            <label for="sort" class="form-label mb-0 text-nowrap fw-bold">Сортувати:</label>
+            <select name="sort" id="sort" class="form-select w-auto" onchange="this.form.submit()">
+                <option value="default" {% if current_sort == 'default' %}selected{% endif %}>За замовчуванням</option>
+                <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Від дешевих до дорогих</option>
+                <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Від дорогих до дешевих</option>
+            </select>
+        </form>
+    </div>
+</div>
         <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
           {% if search_query %}
             <div class="alert alert-info mb-4">
