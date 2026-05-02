@@ -107,39 +107,38 @@
             </div>
           {% endif %}
           {% for product in products %}
-            <div class="col">
-              <div class="product-item">
-                <span class="badge bg-success position-absolute m-3">-30%</span>
-                <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
-                <figure>
+                <div class="product-item swiper-slide">
+                  <span class="badge bg-success position-absolute m-3">-15%</span>
+                  <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                  <figure>
                     <a href="{% url 'product' product.id %}" title="{{ product.name }}">
-                      <img src="{{ product.image.url }}"  class="tab-image" alt="{{ product.name }}">
+                      {% if product.image %}
+                        <img src="{{ product.image.url }}" class="tab-image" alt="{{ product.name }}">
+                      {% else %}
+                        <img src="{% static 'images/thumb-bananas.png' %}" class="tab-image" alt="No image">
+                      {% endif %}
                     </a>
                   </figure>
                   <h3>{{ product.name }}</h3>
-                  <span class="qty">1 Unit</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
-                  <span class="price">{{ product.price }}</span>
-                  <div class="d-flex align-items-center justify-content-between">
-                    <div class="input-group product-qty">
-                      <span class="input-group-btn">
-                            <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                              <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                            </button>
-                        </span>
-                        <input type="text" id="quantity" name="quantity" class="form-control input-number" value="1">
-                      <span class="input-group-btn">
-                            <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                            </button>
-                        </span>
+                  <span class="qty">1 шт.</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                  <span class="price">{{ product.price }} грн</span>
+                  
+                  <form action="{% url 'add_to_cart' product.id %}" method="post" class="ajax-cart-form mt-2 w-100">
+                    {% csrf_token %}
+                    <div class="d-flex gap-2 justify-content-between align-items-center">
+                      <div class="input-group" style="width: 100px;">
+                        <button type="button" class="btn btn-outline-dark px-2" onclick="if(this.form.quantity.value > 1) this.form.quantity.value--;">-</button>
+                        <input type="number" name="quantity" class="form-control text-center px-1" value="1" min="1" max="30" onchange="if(this.value < 1) this.value = 1; if(this.value > 30) this.value = 30;">
+                        <button type="button" class="btn btn-outline-dark px-2" onclick="if(this.form.quantity.value < 30) this.form.quantity.value++;">+</button>
+                      </div>
+                      <button type="submit" class="btn btn-dark flex-grow-1 px-2" style="font-size: 0.9rem;">В кошик</button>
                     </div>
-                    <a href="#" class="nav-link">В кошик <iconify-icon icon="uil:shopping-cart"></a>
-                  </div>
+                  </form>
+
                 </div>
-              </div>
-              {% empty %}
-              <p>Товару немає в наявності.</p>
-              {% endfor %}
+                {% empty %}
+                    <p>Товару немає в наявності.</p>
+                {% endfor %}
             </div>
         </div>
     </div>
