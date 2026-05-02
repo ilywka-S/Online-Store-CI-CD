@@ -153,6 +153,10 @@
         success: function(response) {
           if(response.status === 'success') {
             console.log(response.message);
+            // Оновлюємо суму в шапці
+            $('.cart-total').text(response.cart_total_price + ' грн.');
+            // Оновлюємо список товарів та бейдж всередині бокового кошика
+            $('#offcanvasCart .offcanvas-body').html(response.cart_html);
           }
         },
         error: function(error) {

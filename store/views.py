@@ -141,8 +141,25 @@ def add_to_cart(request, product_id):
         cart_item.quantity = quantity
     cart_item.save()
     
+    from django.template.loader import render_to_string
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        return JsonResponse({'status': 'success', 'message': 'Товар додано в кошик'})
+        cart_total_price = cart.get_total_price()
+        cart_items_count = cart.get_total_quantity()
+        
+        cart_html = render_to_string('cart_offcanvas.html', {
+            'cart': cart,
+            'user': request.user,
+            'cart_total_price': cart_total_price,
+            'cart_items_count': cart_items_count
+        })
+        
+        return JsonResponse({
+            'status': 'success', 
+            'message': 'Товар додано в кошик',
+            'cart_items_count': cart_items_count,
+            'cart_total_price': str(cart_total_price),
+            'cart_html': cart_html
+        })
     
     return redirect(request.META.get('HTTP_REFERER', 'home'))
     
