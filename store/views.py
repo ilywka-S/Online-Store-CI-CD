@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Product, Category, Universe, Cart, CartItem, Order, OrderItem
 from .forms import RegisterForm
+from django.http import JsonResponse
 
 def home_page(request):
     products = Product.objects.filter(in_stock = True)
@@ -140,8 +141,11 @@ def add_to_cart(request, product_id):
         cart_item.quantity = quantity
     cart_item.save()
     
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({'status': 'success', 'message': 'Товар додано в кошик'})
+    
     return redirect(request.META.get('HTTP_REFERER', 'home'))
-
+    
 @login_required(login_url='login')
 def remove_from_cart(request, item_id):
     cart_item = get_object_or_404(CartItem, id=item_id, cart__user=request.user)
