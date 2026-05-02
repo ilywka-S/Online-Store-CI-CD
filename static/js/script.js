@@ -139,7 +139,7 @@
   }
   
   var initAjaxAddToCart = function() {
-    $(document).on('submit', 'form[action*="add_to_cart"]', function(e) {
+    $(document).on('submit', 'form[action*="add-to-cart"]', function(e) {
       e.preventDefault(); // Зупиняємо стандартне відправлення форми і перезавантаження
       
       var form = $(this);
