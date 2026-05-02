@@ -6,9 +6,19 @@ from .models import Product, Category, Universe, Cart, CartItem, Order, OrderIte
 from .forms import RegisterForm
 
 def home_page(request):
-    products = Product.objects.filter(in_stock = True)
+    products = Product.objects.filter(in_stock=True)
+    
+    cheap_products = products.filter(price__lte=100)
+    mid_products = products.filter(price__lte=200)
+    
     categories = Category.objects.all()
-    return render(request, 'index.html', {'products': products, 'categories': categories})
+    
+    return render(request, 'index.html', {
+        'products': products, 
+        'cheap_products': cheap_products, 
+        'mid_products': mid_products,     
+        'categories': categories
+    })
 
 
 def catalog_page(request):
@@ -16,8 +26,6 @@ def catalog_page(request):
     categories = Category.objects.all()
     universes = Universe.objects.all()
 
-    # Отримуємо список унікальних виробників з наявних товарів, 
-    # виключаючи порожні значення
     manufacturers = Product.objects.filter(in_stock=True).exclude(manufacturer='').values_list('manufacturer', flat=True).distinct()
 
     search_query = request.GET.get('q')
@@ -26,15 +34,14 @@ def catalog_page(request):
 
     cat_id = request.GET.get('category')
     uni_id = request.GET.get('universe')
-    manufacturer_filter = request.GET.get('manufacturer') # Новий параметр для виробника
-    min_price = request.GET.get('min_price') # Новий параметр для мінімальної ціни
-    max_price = request.GET.get('max_price') # Новий параметр для максимальної ціни
+    manufacturer_filter = request.GET.get('manufacturer') 
+    min_price = request.GET.get('min_price') 
+    max_price = request.GET.get('max_price') 
     sort_by = request.GET.get('sort', 'default')
 
     active_category = int(cat_id) if cat_id and cat_id.isdigit() else None
     active_universe = int(uni_id) if uni_id and uni_id.isdigit() else None
 
-    # --- Застосовуємо фільтри ---
     if active_category:
         products = products.filter(category_id=active_category)
     if active_universe:
@@ -42,13 +49,11 @@ def catalog_page(request):
     if manufacturer_filter:
         products = products.filter(manufacturer=manufacturer_filter)
         
-    # Фільтрація за ціною
     if min_price and min_price.isdigit():
-        products = products.filter(price__gte=min_price) # Ціна більше або дорівнює (greater than or equal)
+        products = products.filter(price__gte=min_price) 
     if max_price and max_price.isdigit():
-        products = products.filter(price__lte=max_price) # Ціна менше або дорівнює (less than or equal)
+        products = products.filter(price__lte=max_price)
 
-    # --- Сортування ---
     if sort_by == 'price_asc':
         products = products.order_by('price')
     if sort_by == 'price_desc':
@@ -58,14 +63,14 @@ def catalog_page(request):
         'products': products,
         'categories': categories,
         'universes': universes,
-        'manufacturers': manufacturers, # Передаємо виробників у шаблон
+        'manufacturers': manufacturers, 
         'active_category': active_category,
         'active_universe': active_universe,
-        'current_manufacturer': manufacturer_filter, # Передаємо активного виробника
+        'current_manufacturer': manufacturer_filter,
         'current_sort': sort_by,
         'search_query': search_query,
-        'min_price': min_price, # Передаємо мін. ціну
-        'max_price': max_price, # Передаємо макс. ціну
+        'min_price': min_price,
+        'max_price': max_price, 
     }
     return render(request, 'catalog.html', context)
 
