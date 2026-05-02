@@ -6,13 +6,13 @@ from .models import Product, Category, Universe, Cart, CartItem, Order, OrderIte
 from .forms import RegisterForm
 
 def home_page(request):
-    all_products = Product.objects.all()
+    products = Product.objects.filter(in_stock = True)
     categories = Category.objects.all()
-    return render(request, 'index.html', {'products': all_products, 'categories': categories})
+    return render(request, 'index.html', {'products': products, 'categories': categories})
 
 
 def catalog_page(request):
-    products = Product.objects.all()
+    products = Product.objects.filter(in_stock = True)
     categories = Category.objects.all()
     universes = Universe.objects.all()
 
