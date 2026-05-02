@@ -137,6 +137,30 @@
       keepImg: true,
     });
   }
+  
+  var initAjaxAddToCart = function() {
+    $('form[action*="add_to_cart"]').on('submit', function(e) {
+      e.preventDefault(); // Зупиняємо стандартне відправлення форми і перезавантаження
+      
+      var form = $(this);
+      var url = form.attr('action');
+      var data = form.serialize(); // Збираємо дані (csrf_token, quantity)
+      
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function(response) {
+          if(response.status === 'success') {
+            console.log(response.message);
+          }
+        },
+        error: function(error) {
+          console.log("Помилка при додаванні в кошик", error);
+        }
+      });
+    });
+  };
 
   // document ready
   $(document).ready(function() {
@@ -146,6 +170,7 @@
     initProductQty();
     initJarallax();
     initChocolat();
+    initAjaxAddToCart();
 
   }); // End of a document
 
