@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light" style="min-height: 70vh;">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-md-3 mb-4">
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-0">
+                        <div class="p-4 bg-dark text-white rounded-top">
+                            <h5 class="mb-0">Мій кабінет</h5>
+                            <small>{{ user.username }}</small>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <a href="{% url 'account' %}" class="list-group-item list-group-item-action py-3">Особисті дані</a>
+                            <a href="{% url 'order_history' %}" class="list-group-item list-group-item-action py-3 active fw-bold border-start border-4 border-primary">Історія замовлень</a>
+                            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action py-3 text-danger">Вийти</a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <h2 class="mb-4">Історія замовлень</h2>
+                
+                {% if orders %}
+                    {% for order in orders %}
+                        <div class="card mb-4 shadow-sm border-0 rounded-3 overflow-hidden">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                                <div>
+                                    <span class="fw-bold fs-5">Замовлення #{{ order.id }}</span>
+                                    <span class="text-muted ms-3">від {{ order.created_at|date:"d.m.Y H:i" }}</span>
+                                </div>
+                                <div>
+                                    <!-- Виводимо красивий бейдж зі статусом -->
+                                    <span class="badge px-3 py-2
+                                        {% if order.status == 'new' %}bg-primary
+                                        {% elif order.status == 'processing' %}bg-warning text-dark
+                                        {% elif order.status == 'shipped' %}bg-info text-dark
+                                        {% elif order.status == 'delivered' %}bg-success
+                                        {% elif order.status == 'cancelled' %}bg-danger
+                                        {% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table mb-0 align-middle">
+                                        <thead class="table-light text-muted">
+                                            <tr>
+                                                <th class="ps-4 py-3">Товар</th>
+                                                <th class="py-3">Ціна</th>
+                                                <th class="py-3">Кількість</th>
+                                                <th class="py-3">Сума</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in order.items.all %}
+                                            <tr>
+                                                <td class="ps-4 py-3 d-flex align-items-center">
+                                                    {% if item.product.image %}
+                                                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="width: 50px; height: 50px; object-fit: cover;" class="rounded me-3 border">
+                                                    {% endif %}
+                                                    <a href="{% url 'product' item.product.id %}" class="text-decoration-none text-dark fw-bold">{{ item.product.name }}</a>
+                                                </td>
+                                                <td class="py-3">{{ item.price }} грн</td>
+                                                <td class="py-3">{{ item.quantity }} шт.</td>
+                                                <!-- Множимо ціну на кількість для позиції -->
+                                                <td class="py-3">{% widthratio item.price 1 item.quantity %} грн</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                            <div class="card-footer bg-light text-end py-3 px-4">
+                                <span class="fs-5">Загальна сума: <span class="fw-bold text-primary">{{ order.total_price }} грн</span></span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-warning border-0 shadow-sm p-5 text-center rounded-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" class="text-muted mb-3"><path fill="currentColor" d="M19 15.5a3.5 3.5 0 1 1-7 0a3.5 3.5 0 0 1 7 0Zm-1.42-1.88a1.5 1.5 0 1 0-2.16 2.08l1.04 1.08l-1.04 1.08a1.5 1.5 0 0 0 2.16 2.08l1.04-1.08l1.04 1.08a1.5 1.5 0 0 0 2.16-2.08L19.74 15.7l1.04-1.08a1.5 1.5 0 0 0-2.16-2.08L17.58 13.62l-1.04-1.08ZM16 8V6a4 4 0 0 0-8 0v2H5v14h14V8h-3Zm-2 0h-4V6a2 2 0 0 1 4 0v2Z"/></svg>
+                        <h4>У вас ще немає замовлень</h4>
+                        <p class="text-muted mb-4">Ви ще нічого не замовляли. Саме час обрати свій перший конструктор!</p>
+                        <a href="{% url 'catalog' %}" class="btn btn-primary px-4 py-2">Перейти до каталогу</a>
+                    </div>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock %}

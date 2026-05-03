@@ -205,3 +205,10 @@ def confirm_payment(request):
             return redirect('home')
             
     return redirect('home')
+
+
+@login_required(login_url='login')
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at').prefetch_related('items__product')
+    
+    return render(request, 'order_history.html', {'orders': orders})
