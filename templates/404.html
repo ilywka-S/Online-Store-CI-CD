@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 text-center d-flex align-items-center justify-content-center" style="min-height: 60vh;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h1 class="display-1 fw-bold text-danger mb-4">404</h1>
+                <h2 class="mb-3">Ой! Сторінку не знайдено</h2>
+                <p class="lead text-muted mb-5">
+                    Ми шукали цю сторінку, та й не знайшли :(
+                </p>
+                <a href="{% url 'home' %}" class="btn btn-dark btn-lg px-5 text-uppercase">
+                    Повернутися на головну
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
