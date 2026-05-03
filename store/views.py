@@ -145,6 +145,27 @@ def add_to_cart(request, product_id):
         cart_item.quantity = quantity
     cart_item.save()
     
+    from django.template.loader import render_to_string
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        cart_total_price = cart.get_total_price()
+        cart_items_count = cart.get_total_quantity()
+        
+        cart_html = render_to_string('cart_offcanvas.html', {
+            'cart': cart,
+            'user': request.user,
+            'cart_total_price': cart_total_price,
+            'cart_items_count': cart_items_count
+        })
+        
+        from django.http import JsonResponse
+        return JsonResponse({
+            'status': 'success', 
+            'cart_items_count': cart_items_count,
+            'cart_total_price': str(cart_total_price),
+            'cart_html': cart_html
+        })
+        
     return redirect(request.META.get('HTTP_REFERER', 'home'))
 
 @login_required(login_url='login')
@@ -178,7 +199,6 @@ def confirm_payment(request):
                 )
             
             cart.items.all().delete()
-            messages.success(request, "Оплата пройшла успішно! Ваше замовлення збережено в історію.")
             return render(request, 'payment_success.html')
         else:
             messages.error(request, "Ваш кошик порожній.")

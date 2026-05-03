@@ -138,6 +138,31 @@
     });
   }
 
+  var initAjaxAddToCart = function() {
+    $(document).on('submit', '.ajax-cart-form, form[action*="add-to-cart"], form[action*="add_to_cart"]', function(e) {
+      e.preventDefault(); 
+      
+      var form = $(this);
+      var url = form.attr('action');
+      var data = form.serialize(); 
+      
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        success: function(response) {
+          if(response.status === 'success') {
+            $('.cart-total').text(response.cart_total_price + ' грн.');
+            $('#offcanvasCart .offcanvas-body').html(response.cart_html);
+          }
+        },
+        error: function(error) {
+          console.log("Помилка при додаванні в кошик", error);
+        }
+      });
+    });
+  };
+
   // document ready
   $(document).ready(function() {
     
@@ -146,6 +171,7 @@
     initProductQty();
     initJarallax();
     initChocolat();
+    initAjaxAddToCart();
 
   }); // End of a document
 

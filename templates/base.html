@@ -91,43 +91,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <div class="order-md-last">
-          <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-primary">Кошик</span>
-            <span class="badge bg-primary rounded-pill">{{ cart_items_count }}</span>
-          </h4>
-          
-          {% if user.is_authenticated %}
-            {% if cart.items.all %}
-              <ul class="list-group mb-3">
-                {% for item in cart.items.all %}
-                <li class="list-group-item d-flex justify-content-between lh-sm">
-                  <div>
-                    <h6 class="my-0">{{ item.product.name }}</h6>
-                    <small class="text-body-secondary">{{ item.quantity }} шт. х {{ item.product.price }} грн.</small>
-                  </div>
-                  <div class="d-flex flex-column align-items-end">
-                    <span class="text-body-secondary mb-2">{{ item.get_total }} грн.</span>
-                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-sm btn-outline-danger" title="Видалити">
-                      <svg width="16" height="16"><use xlink:href="#trash"></use></svg>
-                    </a>
-                  </div>
-                </li>
-                {% endfor %}
-                <li class="list-group-item d-flex justify-content-between">
-                  <span>Сума:</span>
-                  <strong>{{ cart_total_price }} грн.</strong>
-                </li>
-              </ul>
-              <a href="{% url 'checkout' %}" class="w-100 btn btn-primary btn-lg">Перейти до оплати</a>
-            {% else %}
-              <p class="text-muted text-center mt-5">Ваш кошик порожній.</p>
-            {% endif %}
-          {% else %}
-            <p class="text-muted text-center mt-5">Авторизуйтесь, щоб користуватися кошиком.</p>
-            <a href="{% url 'login' %}" class="w-100 btn btn-outline-primary">Увійти</a>
-          {% endif %}
-        </div>
+        {% include 'cart_offcanvas.html' %}
       </div>
     </div>
     

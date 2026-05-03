@@ -35,7 +35,7 @@
           {{ product.description|default:"Ця модель чекає на свого власника. Якісний продукт, яскраві кольори та години радощів!" }}
         </p>
 
-        <form action="{% url 'add_to_cart' product.id %}" method="post">
+        <form action="{% url 'add_to_cart' product.id %}" method="post" class="ajax-cart-form">
           {% csrf_token %}
           <div class="d-flex gap-3">
             <div class="input-group" style="width: 140px;">
