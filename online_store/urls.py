@@ -16,7 +16,8 @@ urlpatterns = [
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
     path('checkout/', views.checkout_page, name='checkout'),
-    path('confirm-payment/', views.confirm_payment, name='confirm_payment')
+    path('confirm-payment/', views.confirm_payment, name='confirm_payment'),
+    path('account/orders/', views.order_history, name='order_history')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

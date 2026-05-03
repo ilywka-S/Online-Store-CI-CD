@@ -115,3 +115,5 @@ class CartItem(models.Model):
         return f"{self.quantity} x {self.product.name}"
     def get_total(self):
         return self.product.price * self.quantity
+    
+    
