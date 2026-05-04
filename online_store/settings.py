@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+import os
+import sys
 from pathlib import Path
 from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -71,6 +73,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'online_store.wsgi.application'
 
+cloudinary_url = config('CLOUDINARY_URL', default=None)
+if cloudinary_url:
+    os.environ['CLOUDINARY_URL'] = cloudinary_url
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
@@ -126,6 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -133,13 +140,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+TESTING = 'test' in sys.argv or 'pytest' in sys.argv
+
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
