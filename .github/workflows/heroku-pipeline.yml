@@ -30,6 +30,7 @@ jobs:
           ALLOWED_HOSTS: "*"
         run: |
           python manage.py makemigrations --check --dry-run
+          python manage.py collectstatic --noinput
           pytest
 
 
